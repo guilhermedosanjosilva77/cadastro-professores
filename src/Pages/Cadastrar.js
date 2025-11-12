@@ -1,42 +1,71 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Cadastrar() {
-  const [nome, setNome] = useState(" ");
-  const [cpf, setCpf] = useState(" ");
-  const [formacao, setFormacao] = useState(" ");
+  const navigate = useNavigate(); // ✅ deve ser no topo do componente
+
+  const [nome, setNome] = useState("");
+  const [cpf, setCpf] = useState("");
+  const [formacao, setFormacao] = useState("");
   const [email, setEmail] = useState("");
-  const [telefone, setTelfone] = useState("");
+  const [telefone, setTelefone] = useState("");
   const [logradouro, setLogradouro] = useState("");
   const [complemento, setComplemento] = useState("");
   const [cidade, setCidade] = useState("");
   const [cep, setCep] = useState("");
   const [uf, setUf] = useState("");
 
-  const dadosCadastro = {
-    nome,
-    cpf,
-    formacao,
-    email,
-    telefone,
-    endereco: {
-      logradouro,
-      complemento,
-      cidade,
-      cep,
-      uf,
-    },
-  };
-
-  //Chamado quando enviar o formulario
   const Enviar = (e) => {
     e.preventDefault();
+
+    const dadosCadastro = {
+      nome,
+      cpf,
+      formacao,
+      email,
+      telefone,
+      endereco: {
+        logradouro,
+        complemento,
+        cidade,
+        cep,
+        uf,
+      },
+    };
+
+    // 🔹 Recupera cadastros antigos e adiciona o novo
+    const cadastros = JSON.parse(localStorage.getItem("cadastros")) || [];
+    cadastros.push(dadosCadastro);
+    localStorage.setItem("cadastros", JSON.stringify(cadastros));
+
+    console.log("Dados cadastrados:", dadosCadastro);
+    alert("Cadastro realizado com sucesso!");
+
+    // 🔹 Limpa todos os campos
+    setNome("");
+    setCpf("");
+    setFormacao("");
+    setEmail("");
+    setTelefone("");
+    setLogradouro("");
+    setComplemento("");
+    setCidade("");
+    setCep("");
+    setUf("");
+  };
+
+  // ✅ Função para voltar à página inicial
+  const goToHome = (e) => {
+    e.preventDefault(); // evita que o botão dispare o submit
+    navigate("/"); // volta para a rota principal
   };
 
   return (
-    <div>
-      <form>
+    <div style={{ margin: "20px" }}>
+      <form onSubmit={Enviar}>
         <h1>Faça o cadastro</h1>
-        <br></br>
+        <br />
+
         <h2>Dados Pessoais</h2>
         <label>
           Nome Completo:
@@ -44,66 +73,115 @@ function Cadastrar() {
             type="text"
             value={nome}
             onChange={(e) => setNome(e.target.value)}
-          />
-        </label>
-        <label>
-          CPF:
-            <input
-            type="text"
-            value={cpf}
-            onChange={(e) => setCpf(e.target.value)}
-          />
-        </label>
-
-        <label>
-          Formação
-          <input
-          type="text"
-          value={formacao}
-           onChange={(e) => setFormacao(e.target.value)}
-          
+            required
           />
         </label>
         <br />
 
-        <h1>Contatos</h1>
         <label>
-          Email Institucional<input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          
-          
-          />
-        </label>
-        <label>
-          Telefone Celular
+          CPF:
           <input
-          type=""
-          
+            type="text"
+            value={cpf}
+            onChange={(e) => setCpf(e.target.value)}
+            required
           />
         </label>
+        <br />
 
-        <h1>Endereço Residencial</h1>
         <label>
-          Logradouro<input></input>
+          Formação:
+          <input
+            type="text"
+            value={formacao}
+            onChange={(e) => setFormacao(e.target.value)}
+          />
         </label>
+        <br />
+
+        <h2>Contatos</h2>
         <label>
-          Complemento<input></input>
+          Email Institucional:
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
         </label>
+        <br />
+
         <label>
-          Cidade<input></input>
+          Telefone Celular:
+          <input
+            type="tel"
+            value={telefone}
+            onChange={(e) => setTelefone(e.target.value)}
+            required
+          />
         </label>
+        <br />
+
+        <h2>Endereço Residencial</h2>
         <label>
-          CEP<input></input>
+          Logradouro:
+          <input
+            type="text"
+            value={logradouro}
+            onChange={(e) => setLogradouro(e.target.value)}
+          />
         </label>
+        <br />
+
         <label>
-          UF<input></input>
+          Complemento:
+          <input
+            type="text"
+            value={complemento}
+            onChange={(e) => setComplemento(e.target.value)}
+          />
         </label>
+        <br />
+
+        <label>
+          Cidade:
+          <input
+            type="text"
+            value={cidade}
+            onChange={(e) => setCidade(e.target.value)}
+            required
+          />
+        </label>
+        <br />
+
+        <label>
+          CEP:
+          <input
+            type="text"
+            value={cep}
+            onChange={(e) => setCep(e.target.value)}
+          />
+        </label>
+        <br />
+
+        <label>
+          UF:
+          <input
+            type="text"
+            value={uf}
+            onChange={(e) => setUf(e.target.value)}
+            maxLength="2"
+          />
+        </label>
+        <br />
 
         <button type="submit">Enviar</button>
+        <button onClick={goToHome} style={{ marginLeft: "10px" }}>
+          Voltar
+        </button>
       </form>
     </div>
   );
 }
+
 export default Cadastrar;

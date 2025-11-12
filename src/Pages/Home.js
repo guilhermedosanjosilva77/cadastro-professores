@@ -7,6 +7,10 @@ function Home() {
   function GoToPage(){
     navigate(`/Cadastro`)
   }
+  function GoToPesquisa(){
+    navigate(`/Cadastro`)
+  }
+
 
   return (
     <div>
