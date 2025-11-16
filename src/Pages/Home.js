@@ -8,7 +8,7 @@ function Home() {
     navigate(`/Cadastro`)
   }
   function GoToPesquisa(){
-    navigate(`/Cadastro`)
+    navigate(`/Pesquisa`)
   }
 
 
@@ -17,7 +17,7 @@ function Home() {
       <h1>Seja muito bem vindo </h1>
       <h2>O que você deseja acessar?</h2>
       <button onClick={GoToPage}>Cadastrar</button>
-      <button>Pesquisar</button>
+      <button onClick={GoToPesquisa}>Pesquisar</button>
     </div>
   );
 }

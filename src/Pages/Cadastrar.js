@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Cadastrar() {
-  const navigate = useNavigate(); // ✅ deve ser no topo do componente
+  const navigate = useNavigate();
 
   const [nome, setNome] = useState("");
   const [cpf, setCpf] = useState("");
@@ -33,15 +33,15 @@ function Cadastrar() {
       },
     };
 
-    // 🔹 Recupera cadastros antigos e adiciona o novo
+    // salva no localStorage
     const cadastros = JSON.parse(localStorage.getItem("cadastros")) || [];
     cadastros.push(dadosCadastro);
     localStorage.setItem("cadastros", JSON.stringify(cadastros));
 
-    console.log("Dados cadastrados:", dadosCadastro);
+    // feedback pro usuário
     alert("Cadastro realizado com sucesso!");
 
-    // 🔹 Limpa todos os campos
+    // limpa campos
     setNome("");
     setCpf("");
     setFormacao("");
@@ -52,12 +52,13 @@ function Cadastrar() {
     setCidade("");
     setCep("");
     setUf("");
+
+    // ← ← ← AQUI: redireciona para a página da lista (Pesquisa)
+    navigate("/Pesquisa");
   };
 
-  // ✅ Função para voltar à página inicial
-  const goToHome = (e) => {
-    e.preventDefault(); // evita que o botão dispare o submit
-    navigate("/"); // volta para a rota principal
+  const goToHome = () => {
+    navigate("/");
   };
 
   return (
@@ -176,7 +177,9 @@ function Cadastrar() {
         <br />
 
         <button type="submit">Enviar</button>
-        <button onClick={goToHome} style={{ marginLeft: "10px" }}>
+
+        {/* type="button" para não submeter o form */}
+        <button type="button" onClick={goToHome} style={{ marginLeft: "10px" }}>
           Voltar
         </button>
       </form>
